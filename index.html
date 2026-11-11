@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f5">
+    <title>คลังข้อมูล — Logistics dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="data/shipments.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="เมนูหลัก">
+        <a class="brand" href="#" aria-label="คลังข้อมูล หน้าภาพรวม">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M4 10.2 16 4l12 6.2v12.1L16 28 4 22.3V10.2Z"/><path d="m4.5 10 11.5 6 11.5-6M16 16v11"/></svg>
+          </span>
+          <span class="brand-copy"><strong>คลังข้อมูล</strong><small>LOGISTICS INTELLIGENCE</small></span>
+        </a>
+
+        <p class="nav-caption">WORKSPACE</p>
+        <nav class="primary-nav">
+          <button class="nav-item is-active" data-page="overview" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/><rect x="3" y="14" width="8" height="7" rx="2"/></svg>
+            <span>ภาพรวม</span>
+          </button>
+          <button class="nav-item" data-page="shipments" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9Z"/><path d="m3.5 7.7 8.5 4.5 8.5-4.5M12 12.2V21"/></svg>
+            <span>รายการพัสดุ</span>
+            <span class="nav-count" id="nav-count">—</span>
+          </button>
+          <button class="nav-item" data-page="performance" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h17"/><path d="m7 15 4-4 3 2 6-7"/></svg>
+            <span>วิเคราะห์ขนส่ง</span>
+          </button>
+          <button class="nav-item" data-page="quality" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 7v5c0 5-3.8 8-9 9-5.2-1-9-4-9-9V7l9-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+            <span>คุณภาพข้อมูล</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-note">
+          <span class="note-icon" aria-hidden="true">i</span>
+          <div><strong>ข้อมูลสำหรับฝึกวิเคราะห์</strong><p>ตัวเลขอ้างอิงจากไฟล์ที่แนบ อาจมีค่าผิดปกติที่ยังไม่ได้ยืนยัน</p></div>
+        </div>
+        <div class="profile">
+          <span class="profile-avatar">L</span>
+          <span class="profile-copy"><strong>Logistics team</strong><small>Local workspace</small></span>
+          <span class="profile-dots" aria-hidden="true">•••</span>
+        </div>
+      </aside>
+
+      <main class="main-shell">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-separator">/</span><strong id="breadcrumb-current">ภาพรวม</strong></div>
+          <div class="topbar-right">
+            <span class="live-status"><span class="status-dot"></span><span id="load-status">กำลังเตรียมข้อมูล</span></span>
+            <span class="topbar-divider"></span>
+            <span class="today-label">ข้อมูลปี 2026</span>
+            <span class="top-avatar">L</span>
+          </div>
+        </header>
+
+        <section class="workspace">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow" id="page-eyebrow">LOGISTICS OVERVIEW</p>
+              <h1 id="page-title">ภาพรวมพัสดุ</h1>
+              <p class="page-description" id="page-description">มองเห็นสถานะและแนวโน้มการจัดส่งจากข้อมูลชุดเดียวกัน</p>
+            </div>
+            <div class="heading-meta"><span class="data-source-icon" aria-hidden="true">↗</span><span>แหล่งข้อมูล <strong>delivery_logistics_dirty_200.csv</strong></span></div>
+          </div>
+
+          <section class="filter-panel" aria-label="ตัวกรองข้อมูล">
+            <div class="filter-heading"><span class="filter-label">ตัวกรอง</span><span class="filter-hint">ใช้ร่วมกันทุกหน้า</span></div>
+            <label class="filter-control"><span>วันที่รับพัสดุ</span><span class="date-inputs"><input id="date-from" type="date" aria-label="วันที่เริ่มต้น"><i>ถึง</i><input id="date-to" type="date" aria-label="วันที่สิ้นสุด"></span></label>
+            <label class="filter-control"><span>สถานะ</span><select id="status-filter"><option value="">ทุกสถานะ</option></select></label>
+            <label class="filter-control"><span>บริษัทขนส่ง</span><select id="carrier-filter"><option value="">ทุกบริษัท</option></select></label>
+            <label class="filter-control search-control"><span>ค้นหาพัสดุ</span><span class="search-input"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search-filter" type="search" placeholder="รหัส, จังหวัด, สินค้า..."></span></label>
+            <button class="button button-quiet clear-button" id="clear-filters" type="button">ล้างตัวกรอง</button>
+          </section>
+
+          <div id="page-content" class="page-content" aria-live="polite">
+            <div class="loading-state"><span class="spinner"></span>กำลังโหลดข้อมูลพัสดุ...</div>
+          </div>
+
+          <footer class="workspace-footer"><span>แสดงผลจากข้อมูลที่ผ่านการจัดรูปแบบและตัดแถวซ้ำทั้งหมด</span><span id="render-time">พร้อมใช้งาน</span></footer>
+        </section>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
